@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Chat với GPT</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        #response {
+            white-space: pre-wrap;
+            margin-top: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .flex {
+            display: flex;
+            /* align-items: center; */
+        }
+
+        .left {
+
+            padding: 10px;
+            border-radius: 5px;
+            justify-content: flex-start;
+        }
+
+        .right {
+            padding: 10px;
+            border-radius: 5px;
+            justify-content: flex-end;
+        }
+
+        .message {
+            border-radius: 3px;
+            padding: 10px;
+            background-color: #d0f0c0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Chat với GPT</h2>
+    <div style="background-color:#f0f0f0; width: 400px;">
+        <div class="box">
+        </div>
+        <div style="display: flex;">
+            <input type="text" id="userInput" placeholder="Nhập câu hỏi..." style="width: 80%" />
+            <button style="width: 20%;" onclick="sendMessage()">Gửi</button>
+        </div>
+
+    </div>
+
+
+    <script>
+        const API_KEY = "";
+
+        function messageUi(message, isUser) {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "flex " + (isUser ? "right" : "left");
+            messageDiv.innerHTML = `<span class="message">${message}</span>`;
+            document.querySelector(".box").appendChild(messageDiv);
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById("userInput").value;
+            const responseDiv = document.getElementById("response");
+            messageUi(input, true);
+            document.getElementById("userInput").value = "";
+             
+            try {
+                const res = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-4",
+                        messages: [
+                            { role: "system", content: "Bạn là một trợ lý AI thân thiện." },
+                            { role: "user", content: input }
+                        ]
+                    })
+                });
+
+                const data = await res.json();
+                const resMessage = data.choices[0].message.content;
+                messageUi(resMessage, false);
+            } catch (error) {
+                responseDiv.innerText = "Đã xảy ra lỗi: " + error.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
