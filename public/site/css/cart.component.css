@@ -170,12 +170,12 @@ table.order-info-table tfoot td{
 }
 
 .order-list-table {
-    font-family: "OpenSans-Regular" ;
+    font-family: "Poppins", sans-serif ;
     font-size: 18px;
 }
 
 .order-list-table th {
-    font-family: "PlayfairDisplay-SemiBold";
+    font-family: "Poppins", sans-serif;
     text-align: center;
     
 }

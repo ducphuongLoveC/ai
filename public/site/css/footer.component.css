@@ -1,6 +1,6 @@
 :root{
     --bg-color : #fff;
-    --primary-color : #c8aa7b;
+    --primary-color : #696969;
     --primary-color-light:  rgba(201, 170, 123, 1);
     --secondary-color: #fffcf7;
     --product-border-color: #f0e5d4;
@@ -8,11 +8,11 @@
 }
 @font-face{
 	src: url('../fonts/PlayfairDisplay-ExtraBold.ttf');
-    font-family: 'PlayfairDisplay-ExtraBold';
+    font-family: "Poppins", sans-serif;
 }
 
 .footer h1, .footer h2, .footer h4, .footer h5,.footer h6, .footer h3{
-    font-family: 'PlayfairDisplay-ExtraBold';
+    font-family: "Poppins", sans-serif;
     color: white;
 }
 .footer {

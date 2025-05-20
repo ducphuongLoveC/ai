@@ -20,7 +20,7 @@
   span.welcome {
     color: black;
     font-size: 15px;
-    font-family: 'PlayfairDisplay-SemiBold';
+    font-family: "Poppins", sans-serif;
     padding: 10px 28px 10px 15px ;
   }
   /* Set a style for all buttons */
@@ -28,7 +28,7 @@
     background-color: transparent;
     color: black;
     font-size: 15px;
-    font-family: 'PlayfairDisplay-SemiBold';
+    font-family: "Poppins", sans-serif;
     padding: 10px 28px 10px 15px ;
     border: none;
     cursor: pointer;
