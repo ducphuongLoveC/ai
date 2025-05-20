@@ -1,10 +1,19 @@
 <?php
-header("Content-Type: application/json");
+
+header("Content-Type: text/event-stream");
+header("Cache-Control: no-cache");
+header("Connection: keep-alive");
 
 
 $env = parse_ini_file(__DIR__ . '/../.env');
-
 $apiKey = $env['OPENAI_API_KEY'] ?? null;
+
+if (empty($apiKey)) {
+    http_response_code(500);
+    echo json_encode(["error" => "API key không được cấu hình"]);
+    exit;
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -37,16 +46,28 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 
 
+curl_setopt($ch, CURLOPT_TCP_FASTOPEN, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+
+
 curl_setopt($ch, CURLOPT_WRITEFUNCTION, function ($ch, $data) {
     echo $data;
     flush();
     return strlen($data);
 });
 
+
 curl_exec($ch);
 if (curl_errno($ch)) {
     http_response_code(500);
     echo json_encode(["error" => "Lỗi khi gọi API: " . curl_error($ch)]);
+} else {
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    if ($httpCode >= 400) {
+        http_response_code($httpCode);
+        echo json_encode(["error" => "Lỗi từ OpenAI API: HTTP $httpCode"]);
+    }
 }
 curl_close($ch);
 ?>
